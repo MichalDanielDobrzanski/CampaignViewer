@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="A sample campaign which can be entitled like this. The title can be really really long so we have take of it." />
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/campaignImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
