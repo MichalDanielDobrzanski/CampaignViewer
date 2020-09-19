@@ -16,6 +16,7 @@ import com.westwing.campaignviewer.presentation.viewstate.CampaignViewState
 import com.westwing.domain.CampaignModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.campaign_fragment_layout.*
+import kotlin.math.max
 
 @AndroidEntryPoint
 class CampaignFragment : Fragment() {
@@ -56,20 +57,28 @@ class CampaignFragment : Fragment() {
         }
         is CampaignViewState.Content -> {
             renderContent(viewState.campaignModelList)
+            campaignViewPager.currentItem =
+                extractCurrentCampaignIndexByTitle(viewState.campaignModelList)
         }
         CampaignViewState.Error -> {
 
         }
     }
 
+    private fun extractCurrentCampaignIndexByTitle(campaignModelList: List<CampaignModel>): Int =
+        arguments?.getString(DETAIL_SCREEN_CAMPAIGN_KEY)
+            ?.let { title ->
+                max(FALLBACK_INDEX, campaignModelList.indexOfFirst { it.title == title })
+            } ?: FALLBACK_INDEX
+
+
     private fun renderContent(campaignModelList: List<CampaignModel>) {
         campaignAdapter.update(campaignModelList)
     }
-
-    private fun extractCurrentCampaignTitle(): String? =
-        arguments?.getString(DETAIL_SCREEN_CAMPAIGN_KEY)
 
     companion object {
         fun newInstance() = CampaignFragment()
     }
 }
+
+private const val FALLBACK_INDEX = 0
