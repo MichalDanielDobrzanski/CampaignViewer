@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.presentation.viewstate.CampaignViewState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.main_fragment_layout.*
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -23,7 +24,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.main_fragment, container, false)
+    ): View = inflater.inflate(R.layout.main_fragment_layout, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -48,18 +49,22 @@ class MainFragment : Fragment() {
     }
 
     private fun renderLoading() {
-
+        contentViewAnimator.displayedChild = LOADING_INDEX
     }
 
     private fun renderContent() {
-
+        contentViewAnimator.displayedChild = CONTENT_INDEX
     }
 
     private fun renderError() {
-
+        contentViewAnimator.displayedChild = ERROR_INDEX
     }
 
     companion object {
         fun newInstance() = MainFragment()
     }
 }
+
+private const val LOADING_INDEX = 0
+private const val CONTENT_INDEX = 1
+private const val ERROR_INDEX = 2

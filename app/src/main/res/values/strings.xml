@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CampaignViewer</string>
+
+    <string name="network_error_text">There was an error. Please check your internet connection and try again.</string>
+
+    <string name="retry_text">Retry</string>
 </resources>
