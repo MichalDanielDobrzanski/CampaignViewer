@@ -42,11 +42,6 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.main_fragment_layout, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        adjustLayoutToOrientation(resources.configuration.orientation)
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         campaignViewState
             ?.takeIf { it is CampaignViewState.Content }
@@ -98,9 +93,9 @@ class MainFragment : Fragment() {
         contentViewAnimator.displayedChild = CONTENT_INDEX
         campaignListRecyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
             adapter = mainCampaignAdapter
         }
+        adjustLayoutToOrientation(resources.configuration.orientation)
         mainCampaignAdapter.update(campaignModelList)
     }
 

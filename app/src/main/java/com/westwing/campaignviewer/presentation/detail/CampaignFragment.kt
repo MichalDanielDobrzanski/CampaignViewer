@@ -58,10 +58,11 @@ class CampaignFragment : Fragment() {
     }
 
     private fun dialCustomerSupport() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.CALL_PHONE
-            ) == PackageManager.PERMISSION_GRANTED -> {
+        val permissionState = ContextCompat.checkSelfPermission(
+            requireContext(), Manifest.permission.CALL_PHONE
+        )
+        when (permissionState) {
+            PackageManager.PERMISSION_GRANTED -> {
                 startActivity(
                     Intent(
                         Intent.ACTION_DIAL,
@@ -69,15 +70,18 @@ class CampaignFragment : Fragment() {
                     )
                 )
             }
-            shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE) -> {
-                requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
-
+            PackageManager.PERMISSION_DENIED -> {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
+                    CampaignMissingCallPermissionDialog().show(
+                        requireActivity().supportFragmentManager,
+                        CampaignMissingCallPermissionDialog::class.java.simpleName
+                    )
+                } else {
+                    requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
+                }
             }
             else -> {
-                CampaignMissingCallPermissionDialog().show(
-                    requireActivity().supportFragmentManager,
-                    CampaignMissingCallPermissionDialog::class.java.simpleName
-                )
+                // no-op
             }
         }
 

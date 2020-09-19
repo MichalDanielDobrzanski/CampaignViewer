@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.presentation.view.createCircularProgressDrawable
 import com.westwing.campaignviewer.utility.inflateWithoutAttach
@@ -44,7 +43,6 @@ class CampaignAdapter(
                     .load(campaignModel.imageUrl)
                     .placeholder(createCircularProgressDrawable(context.applicationContext))
                     .error(R.drawable.ic_no_network)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(campaignImageView)
             }
         }
