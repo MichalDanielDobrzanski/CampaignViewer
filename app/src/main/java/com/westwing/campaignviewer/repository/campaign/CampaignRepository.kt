@@ -1,5 +1,6 @@
 package com.westwing.campaignviewer.repository.campaign
 
+import com.westwing.campaignviewer.schedulers.SchedulersProvider
 import com.westwing.domain.CampaignModel
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -15,7 +16,9 @@ interface CampaignRepository {
     fun campaignsStream(): Flowable<CampaignRepositoryModel>
 }
 
-class CampaignRepositoryImpl() : CampaignRepository {
+class CampaignRepositoryImpl @Inject constructor(
+    private val schedulersProvider: SchedulersProvider
+) : CampaignRepository {
 
     private val campaignsSubject: BehaviorProcessor<CampaignRepositoryModel> =
         BehaviorProcessor.createDefault<CampaignRepositoryModel>(CampaignRepositoryModel.NotPresent)
@@ -37,4 +40,6 @@ class CampaignRepositoryImpl() : CampaignRepository {
 
     override fun campaignsStream(): Flowable<CampaignRepositoryModel> =
         campaignsSubject.onBackpressureLatest()
+            .subscribeOn(schedulersProvider.io())
+            .observeOn(schedulersProvider.ui())
 }
