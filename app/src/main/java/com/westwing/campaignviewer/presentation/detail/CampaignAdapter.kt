@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.westwing.campaignviewer.R
+import com.westwing.campaignviewer.presentation.view.createCircularProgressDrawable
 import com.westwing.campaignviewer.utility.inflateWithoutAttach
 import com.westwing.domain.CampaignModel
 import kotlinx.android.synthetic.main.campaign_fragment_item.view.*
@@ -41,7 +42,8 @@ class CampaignAdapter(
                 campaignDescriptionTextView.text = campaignModel.description
                 Glide.with(this@CampaignAdapter.context)
                     .load(campaignModel.imageUrl)
-                    .placeholder(R.drawable.ic_loader)
+                    .placeholder(createCircularProgressDrawable(context.applicationContext))
+                    .error(R.drawable.ic_no_network)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(campaignImageView)
             }

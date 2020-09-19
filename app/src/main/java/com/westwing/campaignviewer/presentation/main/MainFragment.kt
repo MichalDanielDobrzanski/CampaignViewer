@@ -107,6 +107,7 @@ class MainFragment : Fragment() {
     private fun renderError() {
         contentViewAnimator.displayedChild = ERROR_INDEX
         retryButton.setOnClickListener {
+            renderLoading()
             viewModel.fetchCampaigns()
         }
     }

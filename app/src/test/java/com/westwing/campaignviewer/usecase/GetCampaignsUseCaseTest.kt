@@ -64,7 +64,11 @@ class GetCampaignsUseCaseTest {
     @Test
     fun `Should fail on fetching campaigns and map it to error state`() {
         // given
-        whenever(mockCampaignRepository.campaignsStream()).thenReturn(Flowable.error(Throwable("Network fail")))
+        whenever(mockCampaignRepository.campaignsStream()).thenReturn(
+            Flowable.just(
+                CampaignRepositoryModel.Error
+            )
+        )
 
         // when
         getCampaignsUseCase.execute()
