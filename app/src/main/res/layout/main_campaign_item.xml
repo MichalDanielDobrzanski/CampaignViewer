@@ -11,9 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start|top"
-        android:paddingBottom="@dimen/campaign_item_margin"
-        android:textStyle="bold"
+        android:paddingTop="@dimen/campaign_item_margin"
         android:textSize="@dimen/campaign_text_size"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="A sample campaign which can be entitled like this. The title can be really really long so we have take of it." />
