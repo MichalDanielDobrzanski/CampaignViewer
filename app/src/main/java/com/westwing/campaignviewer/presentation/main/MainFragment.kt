@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.presentation.viewstate.CampaignViewState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.main_content_view.*
+import kotlinx.android.synthetic.main.main_error_view.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 
 @AndroidEntryPoint
@@ -19,6 +22,8 @@ class MainFragment : Fragment() {
     private var campaignViewState: CampaignViewState? = null
 
     private lateinit var viewModel: MainViewModel
+
+    private val mainCampaignsAdapter: MainCam
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,10 +59,19 @@ class MainFragment : Fragment() {
 
     private fun renderContent() {
         contentViewAnimator.displayedChild = CONTENT_INDEX
+        campaignListRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = mainCampaignsAdapter
+        }
+        mainCampaignsAdapter.update(campaignModelList)
     }
 
     private fun renderError() {
         contentViewAnimator.displayedChild = ERROR_INDEX
+        retryButton.setOnClickListener {
+            viewModel.fetchCampaigns()
+        }
     }
 
     companion object {
