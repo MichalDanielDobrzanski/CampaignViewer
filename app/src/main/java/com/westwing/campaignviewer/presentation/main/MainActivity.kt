@@ -17,6 +17,6 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        ViewModelProvider(this).get(MainViewModel::class.java).fetchCampaigns()
     }
 }
