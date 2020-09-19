@@ -1,10 +1,13 @@
 package com.westwing.campaignviewer.presentation.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.lifecycle.ViewModelProvider
 import com.westwing.campaignviewer.R
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -18,5 +21,15 @@ class MainActivity : AppCompatActivity() {
                     .commitNow()
         }
         ViewModelProvider(this).get(MainViewModel::class.java).fetchCampaigns()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

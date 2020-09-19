@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.main_content_view.*
 import kotlinx.android.synthetic.main.main_error_view.*
 import kotlinx.android.synthetic.main.main_fragment_layout.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -27,8 +29,11 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
 
     private val mainCampaignAdapter: MainCampaignAdapter = MainCampaignAdapter {
-
+        mainNavigator.goToDetailScreenFromCampaign(it)
     }
+
+    @Inject
+    lateinit var mainNavigator: MainNavigator
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +68,7 @@ class MainFragment : Fragment() {
             renderState(it)
             campaignViewState = it
         })
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false);
     }
 
     private fun renderState(viewState: CampaignViewState) = when (viewState) {
