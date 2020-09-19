@@ -42,7 +42,7 @@ class MainCampaignAdapter(
                     onCampaignClickAtPosition(campaignModel.title)
                 }
                 Glide.with(this.context)
-                    .load("https://moodle.htwchur.ch/pluginfile.php/124614/mod_page/content/4/example.jpg")
+                    .load(campaignModel.imageUrl)
                     .placeholder(R.drawable.ic_loader)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(campaignImageView)
