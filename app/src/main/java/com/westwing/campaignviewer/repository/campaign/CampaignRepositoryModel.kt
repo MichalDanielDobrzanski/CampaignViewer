@@ -6,4 +6,6 @@ sealed class CampaignRepositoryModel {
     data class Data(val campaignModelList: List<CampaignModel>) : CampaignRepositoryModel()
 
     object NotPresent : CampaignRepositoryModel()
+
+    object Error : CampaignRepositoryModel()
 }

@@ -33,7 +33,8 @@ class CampaignRepositoryImpl @Inject constructor(
     override fun fetchCampaigns() {
         compositeDisposable.add(
             westwingCampaignWebservice.fetchCampaigns()
-                .map { toDataCampaignRepositoryModel(it) }
+                .map<CampaignRepositoryModel> { toDataCampaignRepositoryModel(it) }
+                .onErrorReturnItem(CampaignRepositoryModel.Error)
                 .subscribeOn(schedulersProvider.io())
                 .observeOn(schedulersProvider.ui())
                 .subscribe(Consumer { campaignsSubject.onNext(it) })

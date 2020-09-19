@@ -9,3 +9,4 @@
 - [ViewModel data loading](https://proandroiddev.com/when-to-load-data-in-viewmodels-ad9616940da7)
 - [Permission handling](https://stackoverflow.com/questions/30719047/android-m-check-runtime-permission-how-to-determine-if-the-user-checked-nev/41288306)
 - [POJO generator](https://www.json2kotlin.com/)
+- [Live Data Testing](https://stackoverflow.com/questions/51810330/testing-livedata-transformations)

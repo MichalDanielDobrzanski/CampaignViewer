@@ -14,14 +14,13 @@ class GetCampaignsUseCase @Inject constructor(
 
     private val campaignViewStateStream: Flowable<CampaignViewState>
         get() = campaignRepository.campaignsStream()
-            .map { model ->
+            .map<CampaignViewState> { model ->
                 return@map when (model) {
                     is CampaignRepositoryModel.Data -> CampaignViewState.Content(model.campaignModelList)
                     CampaignRepositoryModel.NotPresent -> CampaignViewState.Loading
+                    CampaignRepositoryModel.Error -> CampaignViewState.Error
                 }
             }
-            .onErrorReturnItem(CampaignViewState.Error)
-
 
     val campaignViewStateLiveData: LiveData<CampaignViewState>
         get() = LiveDataReactiveStreams.fromPublisher(campaignViewStateStream)
