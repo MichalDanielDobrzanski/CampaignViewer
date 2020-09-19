@@ -1,5 +1,6 @@
 package com.westwing.campaignviewer.presentation.detail
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import com.westwing.domain.CampaignModel
 import kotlinx.android.synthetic.main.campaign_fragment_item.view.*
 
 class CampaignAdapter(
+    private val context: Context
 ) : RecyclerView.Adapter<CampaignAdapter.CampaignViewHolder>() {
 
     private val items: MutableList<CampaignModel> = mutableListOf()
@@ -37,7 +39,7 @@ class CampaignAdapter(
             itemView.apply {
                 campaignTitleTextView.text = campaignModel.title
                 campaignDescriptionTextView.text = campaignModel.description
-                Glide.with(this.context)
+                Glide.with(this@CampaignAdapter.context)
                     .load(campaignModel.imageUrl)
                     .placeholder(R.drawable.ic_loader)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

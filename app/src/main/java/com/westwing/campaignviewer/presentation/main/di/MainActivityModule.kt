@@ -1,6 +1,7 @@
 package com.westwing.campaignviewer.presentation.main.di
 
 import androidx.fragment.app.FragmentActivity
+import com.bumptech.glide.Glide
 import com.westwing.campaignviewer.presentation.main.MainNavigator
 import dagger.Module
 import dagger.Provides

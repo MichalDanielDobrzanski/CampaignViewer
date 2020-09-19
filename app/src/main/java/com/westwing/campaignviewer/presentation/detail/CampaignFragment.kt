@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -28,7 +27,9 @@ class CampaignFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    private val campaignAdapter: CampaignAdapter = CampaignAdapter()
+    private val campaignAdapter: CampaignAdapter by lazy {
+        CampaignAdapter(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -2,7 +2,6 @@ package com.westwing.campaignviewer.presentation.main
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +27,10 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    private val mainCampaignAdapter: MainCampaignAdapter = MainCampaignAdapter {
-        mainNavigator.goToDetailScreenFromCampaign(it)
+    private val mainCampaignAdapter: MainCampaignAdapter by lazy {
+        MainCampaignAdapter(requireActivity()) {
+            mainNavigator.goToDetailScreenFromCampaign(it)
+        }
     }
 
     @Inject
@@ -41,30 +42,36 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.main_fragment_layout, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adjustLayoutToOrientation(resources.configuration.orientation)
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         campaignViewState
             ?.takeIf { it is CampaignViewState.Content }
-            ?.let {
-                when (newConfig.orientation) {
-                    Configuration.ORIENTATION_LANDSCAPE -> {
-                        campaignListRecyclerView.layoutManager =
-                            GridLayoutManager(requireContext(), COLUMN_COUNT_IN_LANDSCAPE)
-                    }
-                    Configuration.ORIENTATION_PORTRAIT -> {
-                        campaignListRecyclerView.layoutManager =
-                            LinearLayoutManager(requireContext())
-                    }
-                }
-            }
-
+            ?.let { adjustLayoutToOrientation(newConfig.orientation) }
         super.onConfigurationChanged(newConfig)
+    }
+
+    private fun adjustLayoutToOrientation(orientation: Int) = when (orientation) {
+        Configuration.ORIENTATION_LANDSCAPE -> {
+            campaignListRecyclerView.layoutManager =
+                GridLayoutManager(requireContext(), COLUMN_COUNT_IN_LANDSCAPE)
+        }
+        Configuration.ORIENTATION_PORTRAIT -> {
+            campaignListRecyclerView.layoutManager =
+                LinearLayoutManager(requireContext())
+        }
+        else -> {
+            // no-op
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.observeCampaigns().observe(viewLifecycleOwner, Observer {
-            Log.d("Me", "viewstate: $it")
             renderState(it)
             campaignViewState = it
         })

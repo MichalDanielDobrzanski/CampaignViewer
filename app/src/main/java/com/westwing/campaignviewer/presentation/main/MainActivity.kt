@@ -3,7 +3,6 @@ package com.westwing.campaignviewer.presentation.main
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.lifecycle.ViewModelProvider
 import com.westwing.campaignviewer.R
 import dagger.hilt.android.AndroidEntryPoint

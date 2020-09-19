@@ -1,5 +1,6 @@
 package com.westwing.campaignviewer.presentation.main
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import com.westwing.domain.CampaignModel
 import kotlinx.android.synthetic.main.main_campaign_item.view.*
 
 class MainCampaignAdapter(
+    private val context: Context,
     private val onCampaignClickAtPosition: (campaignTitle: String) -> Unit
 ) : RecyclerView.Adapter<MainCampaignAdapter.MainCampaignViewHolder>() {
 
@@ -41,7 +43,7 @@ class MainCampaignAdapter(
                 setOnClickListener {
                     onCampaignClickAtPosition(campaignModel.title)
                 }
-                Glide.with(this.context)
+                Glide.with(this@MainCampaignAdapter.context)
                     .load(campaignModel.imageUrl)
                     .placeholder(R.drawable.ic_loader)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
