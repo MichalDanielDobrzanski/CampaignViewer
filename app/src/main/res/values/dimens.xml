@@ -3,4 +3,6 @@
     <dimen name="main_error_view_text_size">20sp</dimen>
 
     <dimen name="main_loading_view_size">200dp</dimen>
+
+    <dimen name="campaign_item_margin">8dp</dimen>
 </resources>

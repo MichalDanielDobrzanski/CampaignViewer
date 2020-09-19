@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.utility.inflateWithoutAttach
 import com.westwing.domain.CampaignModel
+import kotlinx.android.synthetic.main.main_campaign_item.view.*
 
 class MainCampaignAdapter(
     private val onCampaignClickAtPosition: (campaignTitle: String) -> Unit
@@ -15,24 +16,29 @@ class MainCampaignAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainCampaignViewHolder =
         MainCampaignViewHolder(
-            parent.inflateWithoutAttach(R.layout.main_campaign_item),
-            onCampaignClickAtPosition
+            parent.inflateWithoutAttach(R.layout.main_campaign_item)
         )
 
     override fun onBindViewHolder(holder: MainCampaignViewHolder, position: Int) {
-
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
 
-    inner class MainCampaignViewHolder(
-        view: View,
-        onCampaignClickAtPosition: (campaignTitle: String) -> Unit
-    ) : RecyclerView.ViewHolder(view) {
+    fun update(campaignModelList: List<CampaignModel>) {
+        items.clear()
+        items.addAll(campaignModelList)
+        notifyDataSetChanged()
+    }
 
-        fun bind(position: Int) {
+    inner class MainCampaignViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(campaignModel: CampaignModel) {
             itemView.apply {
-                // TODO: item clicks + layout
+                campaignNameTextView.text = campaignModel.title
+                setOnClickListener {
+                    onCampaignClickAtPosition(campaignModel.title)
+                }
             }
         }
     }

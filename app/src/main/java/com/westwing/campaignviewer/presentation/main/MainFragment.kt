@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.presentation.viewstate.CampaignViewState
+import com.westwing.domain.CampaignModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.main_content_view.*
 import kotlinx.android.synthetic.main.main_error_view.*
@@ -23,7 +24,9 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    private val mainCampaignsAdapter: MainCam
+    private val mainCampaignAdapter: MainCampaignAdapter = MainCampaignAdapter {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +49,7 @@ class MainFragment : Fragment() {
             renderLoading()
         }
         is CampaignViewState.Content -> {
-            renderContent()
+            renderContent(viewState.campaignModelList)
         }
         CampaignViewState.Error -> {
             renderError()
@@ -57,14 +60,14 @@ class MainFragment : Fragment() {
         contentViewAnimator.displayedChild = LOADING_INDEX
     }
 
-    private fun renderContent() {
+    private fun renderContent(campaignModelList: List<CampaignModel>) {
         contentViewAnimator.displayedChild = CONTENT_INDEX
         campaignListRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = mainCampaignsAdapter
+            adapter = mainCampaignAdapter
         }
-        mainCampaignsAdapter.update(campaignModelList)
+        mainCampaignAdapter.update(campaignModelList)
     }
 
     private fun renderError() {
