@@ -1,4 +1,4 @@
-package com.westwing.campaignviewer.ui.main
+package com.westwing.campaignviewer.presentation.main
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle

@@ -1,8 +1,8 @@
-package com.westwing.campaignviewer
+package com.westwing.campaignviewer.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.westwing.campaignviewer.ui.main.MainFragment
+import com.westwing.campaignviewer.R
 
 class MainActivity : AppCompatActivity() {
 
