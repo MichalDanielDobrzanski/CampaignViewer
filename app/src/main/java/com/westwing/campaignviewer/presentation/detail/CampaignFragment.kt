@@ -1,11 +1,15 @@
 package com.westwing.campaignviewer.presentation.detail
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +21,7 @@ import com.westwing.domain.CampaignModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.campaign_fragment_layout.*
 import kotlin.math.max
+
 
 @AndroidEntryPoint
 class CampaignFragment : Fragment() {
@@ -34,6 +39,47 @@ class CampaignFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         campaignViewPager.adapter = campaignAdapter
+
+        toolbar.apply {
+            setNavigationIcon(R.drawable.ic_back)
+            setNavigationOnClickListener { requireActivity().onBackPressed() }
+            inflateMenu(R.menu.campaign_fragment_menu)
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.callSupportMenuItem -> {
+                        dialCustomerSupport()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+
+    private fun dialCustomerSupport() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.CALL_PHONE
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_DIAL,
+                        Uri.fromParts("tel", WESTWING_CUSTOMER_SUPPORT_NUMBER, null)
+                    )
+                )
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE) -> {
+                requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_PHONE_CALL)
+
+            }
+            else -> {
+                CampaignMissingCallPermissionDialog().show(
+                    requireActivity().supportFragmentManager,
+                    CampaignMissingCallPermissionDialog::class.java.simpleName
+                )
+            }
+        }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -42,26 +88,16 @@ class CampaignFragment : Fragment() {
         viewModel.observeCampaigns().observe(viewLifecycleOwner, Observer {
             renderState(it)
         })
-        (requireActivity() as AppCompatActivity).apply {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true);
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            );
-        }
     }
 
     private fun renderState(viewState: CampaignViewState) = when (viewState) {
-        CampaignViewState.Loading -> {
-
-        }
         is CampaignViewState.Content -> {
             renderContent(viewState.campaignModelList)
             campaignViewPager.currentItem =
                 extractCurrentCampaignIndexByTitle(viewState.campaignModelList)
         }
-        CampaignViewState.Error -> {
-
+        else -> {
+            // no-op
         }
     }
 
@@ -82,3 +118,6 @@ class CampaignFragment : Fragment() {
 }
 
 private const val FALLBACK_INDEX = 0
+
+private const val WESTWING_CUSTOMER_SUPPORT_NUMBER = "+49 89 412 072 72"
+private const val REQUEST_PHONE_CALL = 1

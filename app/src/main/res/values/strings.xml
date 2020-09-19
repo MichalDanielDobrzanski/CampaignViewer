@@ -4,4 +4,10 @@
     <string name="network_error_text">There was an error. Please check your internet connection and try again.</string>
 
     <string name="retry_text">Retry</string>
+
+    <string name="campaign_fragment_menu_call_text">Call support</string>
+
+    <string name="cancel_text">Cancel</string>
+
+    <string name="need_call_permission_rationale">You need to grant call permission to call the Westing Customer Service. Please enable it in app\'s settings</string>
 </resources>
