@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -32,9 +33,6 @@ class CampaignFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         campaignViewPager.adapter = campaignAdapter
-        arguments?.getString(DETAIL_SCREEN_CAMPAIGN_KEY)?.let { campaignTitle ->
-            campaignAdapter.setCurrentCampaign(campaignTitle)
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -43,7 +41,13 @@ class CampaignFragment : Fragment() {
         viewModel.observeCampaigns().observe(viewLifecycleOwner, Observer {
             renderState(it)
         })
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        (requireActivity() as AppCompatActivity).apply {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true);
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            );
+        }
     }
 
     private fun renderState(viewState: CampaignViewState) = when (viewState) {
@@ -61,6 +65,9 @@ class CampaignFragment : Fragment() {
     private fun renderContent(campaignModelList: List<CampaignModel>) {
         campaignAdapter.update(campaignModelList)
     }
+
+    private fun extractCurrentCampaignTitle(): String? =
+        arguments?.getString(DETAIL_SCREEN_CAMPAIGN_KEY)
 
     companion object {
         fun newInstance() = CampaignFragment()

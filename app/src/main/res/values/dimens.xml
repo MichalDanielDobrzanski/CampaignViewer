@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_error_view_text_size">20sp</dimen>
-
     <dimen name="main_loading_view_size">200dp</dimen>
 
     <dimen name="campaign_item_margin">8dp</dimen>
+    <dimen name="campaign_text_size">18sp</dimen>
+
+    <dimen name="campaign_fragment_item_text_margin">20dp</dimen>
+    <dimen name="campaign_fragment_item_text_padding">8dp</dimen>
 </resources>

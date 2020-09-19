@@ -3,9 +3,12 @@ package com.westwing.campaignviewer.presentation.detail
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.utility.inflateWithoutAttach
 import com.westwing.domain.CampaignModel
+import kotlinx.android.synthetic.main.campaign_fragment_item.view.*
 
 class CampaignAdapter(
 ) : RecyclerView.Adapter<CampaignAdapter.CampaignViewHolder>() {
@@ -22,9 +25,6 @@ class CampaignAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    fun setCurrentCampaign(campaignTitle: String) {
-    }
-
     fun update(campaignModelList: List<CampaignModel>) {
         items.clear()
         items.addAll(campaignModelList)
@@ -34,7 +34,15 @@ class CampaignAdapter(
     inner class CampaignViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(campaignModel: CampaignModel) {
-
+            itemView.apply {
+                campaignTitleTextView.text = campaignModel.title
+                campaignDescriptionTextView.text = campaignModel.description
+                Glide.with(this.context)
+                    .load("https://moodle.htwchur.ch/pluginfile.php/124614/mod_page/content/4/example.jpg")
+                    .placeholder(R.drawable.ic_loader)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(campaignImageView)
+            }
         }
     }
 }

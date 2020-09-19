@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.utility.inflateWithoutAttach
 import com.westwing.domain.CampaignModel
@@ -43,6 +44,7 @@ class MainCampaignAdapter(
                 Glide.with(this.context)
                     .load("https://moodle.htwchur.ch/pluginfile.php/124614/mod_page/content/4/example.jpg")
                     .placeholder(R.drawable.ic_loader)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(campaignImageView)
             }
         }
