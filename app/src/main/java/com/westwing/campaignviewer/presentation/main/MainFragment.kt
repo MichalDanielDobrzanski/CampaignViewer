@@ -1,5 +1,6 @@
 package com.westwing.campaignviewer.presentation.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.westwing.campaignviewer.R
 import com.westwing.campaignviewer.presentation.viewstate.CampaignViewState
@@ -33,6 +35,25 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.main_fragment_layout, container, false)
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        campaignViewState
+            ?.takeIf { it is CampaignViewState.Content }
+            ?.let {
+                when (newConfig.orientation) {
+                    Configuration.ORIENTATION_LANDSCAPE -> {
+                        campaignListRecyclerView.layoutManager =
+                            GridLayoutManager(requireContext(), COLUMN_COUNT_IN_LANDSCAPE)
+                    }
+                    Configuration.ORIENTATION_PORTRAIT -> {
+                        campaignListRecyclerView.layoutManager =
+                            LinearLayoutManager(requireContext())
+                    }
+                }
+            }
+
+        super.onConfigurationChanged(newConfig)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -85,3 +106,4 @@ class MainFragment : Fragment() {
 private const val LOADING_INDEX = 0
 private const val CONTENT_INDEX = 1
 private const val ERROR_INDEX = 2
+private const val COLUMN_COUNT_IN_LANDSCAPE = 2
